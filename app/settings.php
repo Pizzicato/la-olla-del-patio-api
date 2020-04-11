@@ -1,19 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
-use DI\ContainerBuilder;
+use DI\Container;
 use Monolog\Logger;
 
-return function (ContainerBuilder $containerBuilder) {
-    // Global Settings Object
-    $containerBuilder->addDefinitions([
-        'settings' => [
-            'displayErrorDetails' => true, // Should be set to false in production
-            'logger' => [
-                'name' => 'slim-app',
-                'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
-                'level' => Logger::DEBUG,
-            ],
-        ],
-    ]);
+return function (Container $container) {
+  $container->set('settings', function () {
+
+    $isLocalhost = strpos($_SERVER['HTTP_HOST'], 'localhost') !== false;
+
+    return [
+      'name' => 'La Olla del patio backend',
+      'environment' => $isLocalhost ? 'dev' : 'prod',
+      'displayErrorDetails' => $isLocalhost,
+      'logErrors' => true,
+      'logErrorDetails' => true,
+      'logger' => [
+        'name' => 'la-olla-del-patio-app-be',
+        'path' => __DIR__ . '/../logs/olla.log',
+        'level' => Logger::DEBUG,
+        'maxFiles' => 200,
+      ]
+    ];
+  });
 };
