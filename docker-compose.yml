@@ -18,7 +18,7 @@ services:
         image: mysql:5.7
         restart: always
         environment:
-            MYSQL_DATABASE: 'db'
+            MYSQL_DATABASE: 'laollad1_DB'
             # So you don't have to use root, but you can if you like
             MYSQL_USER: 'user'
             # You can use whatever password you like
@@ -44,4 +44,4 @@ services:
             - 8080:8080
         volumes:
             - .:/var/www
-            - logs:/var/www/logs
+            - logs:/var/logs

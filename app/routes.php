@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 return function(App $app) {
   $app->get('/', function (Request $request, Response $response) {
-    $response->getBody()->write('Pollasdaduo');
+    $response->getBody()->write('Hello');
     return $response;
   });
 };

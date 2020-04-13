@@ -12,9 +12,11 @@ $container = new Container();
 $settings = require __DIR__ . '/../app/settings.php';
 $settings($container);
 
-// $connection = require __DIR__ . '/../app/connection.php';
-// $connection($container);
+$db = require __DIR__ . '/../app/db.php';
+$db($container);
 
+$a = $container->get('db')->table('grupos')->get();
+print_r($a);
 
 $environment = $container->get('settings')['environment'];
 
