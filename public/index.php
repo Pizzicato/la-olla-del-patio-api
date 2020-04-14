@@ -2,41 +2,46 @@
 
 declare(strict_types=1);
 
-use DI\Container;
-use Slim\Factory\AppFactory;
+(require __DIR__ . '/../config/bootstrap.php')->run();
 
-require __DIR__ . '/../vendor/autoload.php';
 
-$container = new Container();
+// declare(strict_types=1);
 
-$settings = require __DIR__ . '/../app/settings.php';
-$settings($container);
+// use DI\Container;
+// use Slim\Factory\AppFactory;
 
-$db = require __DIR__ . '/../app/db.php';
-$db($container);
+// require __DIR__ . '/../vendor/autoload.php';
 
-$a = $container->get('db')->table('grupos')->get();
-print_r($a);
+// $container = new Container();
 
-$environment = $container->get('settings')['environment'];
+// $settings = require __DIR__ . '/../app/settings.php';
+// $settings($container);
 
-// TODO when upload to prod, check if logs are created
-if ($environment === 'prod') {
-  $logger = require __DIR__ . '/../app/logger.php';
-  $logger($container);
-}
+// $db = require __DIR__ . '/../app/db.php';
+// $db($container);
 
-// Set Container on app
-AppFactory::setContainer($container);
+// $a = $container->get('db')->table('grupos')->get();
+// print_r($a);
 
-// Create App
-$app = AppFactory::create();
+// $environment = $container->get('settings')['environment'];
 
-$middleware = require __DIR__ . '/../app/middleware.php';
-$middleware($app);
+// // TODO when upload to prod, check if logs are created
+// if ($environment === 'prod') {
+//   $logger = require __DIR__ . '/../app/logger.php';
+//   $logger($container);
+// }
 
-$routes = require __DIR__ . '/../app/routes.php';
-$routes($app);
+// // Set Container on app
+// AppFactory::setContainer($container);
 
-// Run App
-$app->run();
+// // Create App
+// $app = AppFactory::create();
+
+// $middleware = require __DIR__ . '/../app/middleware.php';
+// $middleware($app);
+
+// $routes = require __DIR__ . '/../app/routes.php';
+// $routes($app);
+
+// // Run App
+// $app->run();
