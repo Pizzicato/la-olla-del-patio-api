@@ -1,10 +1,13 @@
 <?php
 
+use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Illuminate\Container\Container as IlluminateContainer;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Connectors\ConnectionFactory;
-use Psr\Container\ContainerInterface;
 use Selective\Config\Configuration;
+use Selective\Validation\Encoder\JsonEncoder;
+use Selective\Validation\Middleware\ValidationExceptionMiddleware;
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
@@ -25,6 +28,10 @@ return [
     return $app;
   },
 
+  ResponseFactoryInterface::class => function (ContainerInterface $container) {
+    return $container->get(App::class)->getResponseFactory();
+  },
+
   ErrorMiddleware::class => function (ContainerInterface $container) {
     $app = $container->get(App::class);
     $settings = $container->get(Configuration::class)->getArray('error_handler_middleware');
@@ -36,6 +43,12 @@ return [
       (bool) $settings['log_errors'],
       (bool) $settings['log_error_details']
     );
+  },
+
+  ValidationExceptionMiddleware::class => function (ContainerInterface $container) {
+    $factory = $container->get(ResponseFactoryInterface::class);
+
+    return new ValidationExceptionMiddleware($factory, new JsonEncoder());
   },
 
   // Database connection

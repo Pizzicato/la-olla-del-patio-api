@@ -8,6 +8,7 @@
         "php-di/php-di": "^6.0",
         "selective/array-reader": "^0.3.0",
         "selective/config": "^0.2.0",
+        "selective/validation": "^0.7.1",
         "slim/psr7": "^0.5",
         "slim/slim": "^4.1"
     },

@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use Selective\Config\Configuration;
+use Selective\Validation\Encoder\JsonEncoder;
+use Selective\Validation\Middleware\ValidationExceptionMiddleware;
 use Slim\App;
 use Slim\Middleware\ErrorMiddleware;
 
@@ -12,6 +13,11 @@ return function (App $app) {
 
   // Add the Slim built-in routing middleware
   $app->addRoutingMiddleware();
+
+  $app->add(new ValidationExceptionMiddleware(
+    $app->getResponseFactory(),
+    new JsonEncoder()
+  ));
 
   // Catch exceptions and errors
   $app->add(ErrorMiddleware::class);

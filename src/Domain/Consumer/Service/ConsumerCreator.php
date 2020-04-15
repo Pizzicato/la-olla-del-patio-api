@@ -6,7 +6,8 @@ namespace App\Domain\Consumer\Service;
 
 use App\Domain\Consumer\Data\ConsumerCreateData;
 use App\Domain\Consumer\Repository\ConsumerCreatorRepository;
-use InvalidArgumentException;
+use App\Domain\Consumer\Validator\ConsumerCreateValidator;
+use Selective\Validation\Exception\ValidationException;
 
 /**
  * Service.
@@ -19,13 +20,27 @@ final class ConsumerCreator
   private $repository;
 
   /**
+   * @var ConsumerCreateValidator
+   */
+  protected $validator;
+
+  /**
+   * @var LoggerInterface
+   */
+  private $logger;
+
+  /**
    * The constructor.
    *
    * @param ConsumerCreatorRepository $repository The repository
    */
-  public function __construct(ConsumerCreatorRepository $repository)
+  public function __construct(
+    ConsumerCreatorRepository $repository,
+    ConsumerCreateValidator $validator
+    )
   {
     $this->repository = $repository;
+    $this->validator = $validator;
   }
 
   /**
@@ -40,21 +55,9 @@ final class ConsumerCreator
   public function createConsumer(ConsumerCreateData $consumer): int
   {
     // Validation
-    if (empty($consumer->name)) {
-      throw new InvalidArgumentException('Name required');
-    }
-
-    // TODO: Mail validation
-    if (empty($consumer->email)) {
-      throw new InvalidArgumentException('Email required');
-    }
-
-    if (empty($consumer->password)) {
-      throw new InvalidArgumentException('Password required');
-    }
-
-    if (empty($consumer->roleIds)) {
-      throw new InvalidArgumentException('Group(s) required');
+    $validation = $this->validator->validateConsumer($consumer);
+    if ($validation->isFailed()) {
+      throw new ValidationException($validation);
     }
 
     // Insert consumer
