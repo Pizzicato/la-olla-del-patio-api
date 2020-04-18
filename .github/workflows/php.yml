@@ -26,5 +26,5 @@ jobs:
         ftp-server: ${{ secrets.FTP_HOST }}
         ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ${{ secrets.FTP_LOCAL_DIR }}
+        local-dir: /backend
         git-ftp-args: --dry-run
