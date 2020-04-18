@@ -1,0 +1,28 @@
+name: PHP Composer
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@3.0.0
+      with:
+        ftp-server: ${{ secrets.FTP_HOST }}
+        ftp-username: ${{ secrets.FTP_USER }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ${{ secrets.FTP_LOCAL_DIR }}
+        git-ftp-args: --dry-run
