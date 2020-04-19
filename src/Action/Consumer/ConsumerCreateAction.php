@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Action;
+namespace App\Action\Consumer;
 
 use App\Domain\Consumer\Data\ConsumerCreateData;
 use App\Domain\Consumer\Service\ConsumerCreator;

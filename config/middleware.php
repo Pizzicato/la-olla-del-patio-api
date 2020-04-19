@@ -1,24 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
-use Selective\Validation\Encoder\JsonEncoder;
+use App\Middleware\SessionMiddleware;
+use App\Middleware\TranslatorMiddleware;
+use App\Middleware\UrlGeneratorMiddleware;
+use Selective\BasePath\BasePathMiddleware;
 use Selective\Validation\Middleware\ValidationExceptionMiddleware;
 use Slim\App;
 use Slim\Middleware\ErrorMiddleware;
+use Slim\Views\TwigMiddleware;
 
 return function (App $app) {
-  // Parse json, form data and xml
-  $app->addBodyParsingMiddleware();
+    // Parse json, form data and xml
+    $app->addBodyParsingMiddleware();
 
-  // Add the Slim built-in routing middleware
-  $app->addRoutingMiddleware();
-
-  $app->add(new ValidationExceptionMiddleware(
-    $app->getResponseFactory(),
-    new JsonEncoder()
-  ));
-
-  // Catch exceptions and errors
-  $app->add(ErrorMiddleware::class);
+    $app->add(ValidationExceptionMiddleware::class);
+    $app->add(TwigMiddleware::class);
+    $app->add(TranslatorMiddleware::class);
+    $app->add(SessionMiddleware::class);
+    $app->add(UrlGeneratorMiddleware::class);
+    $app->addRoutingMiddleware();
+    $app->add(BasePathMiddleware::class);
+    $app->add(ErrorMiddleware::class);
 };

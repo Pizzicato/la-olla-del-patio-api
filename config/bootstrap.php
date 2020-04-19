@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 use DI\ContainerBuilder;
 use Slim\App;
+use Symfony\Component\Translation\Translator;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -11,8 +10,6 @@ $containerBuilder = new ContainerBuilder();
 
 // Set up settings
 $containerBuilder->addDefinitions(__DIR__ . '/container.php');
-
-// TODO: check environment from setting and add logger
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
@@ -25,5 +22,8 @@ $app = $container->get(App::class);
 
 // Register middleware
 (require __DIR__ . '/middleware.php')($app);
+
+// Init translator instance
+$container->get(Translator::class);
 
 return $app;
