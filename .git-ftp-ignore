@@ -1,7 +1,9 @@
 .cs.php
 .editorconfig
-.gitattributes
-.gitignore
+*/.gitattributes
+*/.gitignore      # ignore files in sub directories
+*/.gitkeep
+.git-ftp-ignore
 composer.json
 composer.lock
 docker-compose.yml
@@ -10,9 +12,9 @@ phpstan.neon
 phpunit.xml
 psalm.xml
 tsconfig.json
-.github/
-old-config/
-bin/
-resources/migrations/
+.github*
+old-config*
+bin*
+resources/migrations*
 resources/seeds/
-tests/
+tests*
