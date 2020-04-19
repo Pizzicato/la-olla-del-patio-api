@@ -23,7 +23,7 @@ jobs:
     - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@3.0.0
       with:
-        ftp-server: ftp://ftp.laolladelpatio.org
-        ftp-username: laolla@laolladelpatio.org
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USER }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
-        git-ftp-args: -vv --dry-run
+        git-ftp-args: --remote-root api/v1/
